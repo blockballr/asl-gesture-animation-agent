@@ -3,33 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ASL Signer — render spike</title>
+    <title>ASL Signer — fingerspelling</title>
     <style>
       :root { color-scheme: dark; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { height: 100%; background: #0b0e14; color: #e6e9ef; font-family: system-ui, sans-serif; overflow: hidden; }
       #app { position: fixed; inset: 0; }
-      .hud {
-        position: fixed; left: 16px; top: 16px; z-index: 10;
+
+      .panel {
+        position: fixed; left: 16px; top: 16px; z-index: 10; width: 300px;
         background: rgba(20, 24, 33, 0.72); backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
-        padding: 14px 16px; max-width: 280px; line-height: 1.45; font-size: 13px;
+        border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+        padding: 16px; line-height: 1.45; font-size: 13px;
       }
-      .hud h1 { font-size: 14px; margin-bottom: 6px; letter-spacing: 0.2px; }
-      .hud .tag { color: #7c8394; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-      .hud .clip { margin-top: 8px; color: #9fb4ff; font-weight: 600; }
-      .hud .hint { margin-top: 8px; color: #7c8394; font-size: 12px; }
+      .tag { color: #7c8394; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+      .panel h1 { font-size: 15px; margin: 4px 0 10px; }
+
+      .row { display: flex; gap: 8px; margin-top: 10px; }
+      button, input {
+        font: inherit; border-radius: 9px; border: 1px solid rgba(255,255,255,0.12);
+        background: #1a2030; color: #e6e9ef; padding: 9px 12px;
+      }
+      button { cursor: pointer; transition: background .15s, border-color .15s; }
+      button:hover { background: #232b40; }
+      button:disabled { opacity: .5; cursor: not-allowed; }
+      #mic.on { background: #3a1f2a; border-color: #ff6b8b; color: #ffd0d9; }
+      input { flex: 1; min-width: 0; }
+      #spell { background: #26314f; border-color: #3d5a9e; }
+      #spell:hover { background: #2e3c63; }
+
+      .status { margin-top: 10px; color: #7c8394; font-size: 12px; min-height: 1.2em; }
+      .heard-label { margin-top: 12px; color: #7c8394; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+      .heard { margin-top: 3px; color: #9fb4ff; font-weight: 600; min-height: 1.3em; word-break: break-word; }
+      .note { margin-top: 12px; color: #626a7c; font-size: 11px; line-height: 1.4; }
+
+      .letter {
+        position: fixed; right: 32px; bottom: 28px; z-index: 10;
+        font-size: 128px; font-weight: 800; line-height: 1; color: #ffd27f;
+        text-shadow: 0 0 40px rgba(255,210,127,0.25); min-width: 90px; text-align: center;
+        font-variant-numeric: tabular-nums;
+      }
     </style>
   </head>
   <body>
     <div id="app"></div>
-    <div class="hud">
-      <div class="tag">Milestone 1 · render spike</div>
+
+    <div class="panel">
+      <div class="tag">Milestone 2 · fingerspelling</div>
       <h1>ASL Signer</h1>
-      <div>Hand skeleton driven by a hardcoded landmark keyframe clip — the same data contract real signs will use.</div>
-      <div class="clip">▶ playing: <span id="clip-name">wave</span></div>
-      <div class="hint">drag to orbit · scroll to zoom</div>
+      <div>Speak or type a word — the avatar fingerspells it letter by letter. Out-of-vocab everything, for now, is spelled.</div>
+
+      <div class="row">
+        <button id="mic">🎤 Listen</button>
+      </div>
+      <div class="row">
+        <input id="text" type="text" placeholder="type a word…" autocomplete="off" />
+        <button id="spell">Spell</button>
+      </div>
+
+      <div class="status" id="status">ready</div>
+      <div class="heard-label">heard</div>
+      <div class="heard" id="heard">—</div>
+
+      <div class="note">Mic uses the Web Speech API (Chrome/Edge). Letter handshapes are parametric approximations — real ASL shapes come via MediaPipe capture in a later milestone.</div>
     </div>
+
+    <div class="letter" id="letter"></div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
