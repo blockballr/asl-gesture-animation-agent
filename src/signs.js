@@ -419,11 +419,13 @@ export function vocabularyList() {
   return Object.keys(VOCAB);
 }
 
-// Authoritative reference: a Handspeak ASL dictionary search for the word, so
-// a synthesized sign can be compared against a real signer. Centralized here
-// so the URL format is a one-line fix if the site ever changes.
-const REF_SEARCH = 'https://www.google.com/search?q=';
+// Authoritative reference: a YouTube search for the word's ASL sign, so a
+// synthesized sign can be compared against real human signers. (Dedicated ASL
+// dictionaries like Handspeak/Signing Savvy use opaque per-sign IDs with no
+// queryable per-word URL, so they cannot be linked directly.) Centralized here
+// so the target is a one-line change.
+const REF_SEARCH = 'https://www.youtube.com/results?search_query=';
 export function refUrl(word) {
   const w = (word || '').toLowerCase().replace(/-/g, ' ').trim();
-  return REF_SEARCH + encodeURIComponent('ASL sign ' + w + ' handspeak');
+  return REF_SEARCH + encodeURIComponent('ASL sign ' + w);
 }
