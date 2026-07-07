@@ -1,4 +1,4 @@
-// signs.js — procedural whole-word ASL signs.
+// signs.js - procedural whole-word ASL signs.
 //
 // A sign is authored declaratively as a sequence of keyframes; each keyframe
 // places one or both hands (handshape + location + orientation), and

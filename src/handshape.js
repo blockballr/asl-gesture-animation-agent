@@ -1,4 +1,4 @@
-// handshape.js — parametric hand -> 21 MediaPipe landmarks.
+// handshape.js - parametric hand -> 21 MediaPipe landmarks.
 //
 // Instead of hand-typing 63 numbers per letter, a handshape is described by
 // four finger-curl values (0 = straight, 1 = fully curled), a spread amount

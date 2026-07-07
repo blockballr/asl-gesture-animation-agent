@@ -1,4 +1,4 @@
-// _gemini.js — shared Gemini call for the ASL gloss proxy. The underscore
+// _gemini.js - shared Gemini call for the ASL gloss proxy. The underscore
 // prefix keeps Vercel from treating this as a route; it is imported by
 // api/gloss.js (production) and by the Vite dev middleware (local dev) so both
 // share one implementation. Uses global fetch (Node 18+).

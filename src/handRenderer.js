@@ -1,4 +1,4 @@
-// handRenderer.js — turns a single frame (21 landmarks) into 3D geometry.
+// handRenderer.js - turns a single frame (21 landmarks) into 3D geometry.
 //
 // Joints are spheres, bones are tube-ish lines. setFrame(landmarks) is the
 // only thing the animation loop calls; it repositions everything in place so
@@ -37,7 +37,7 @@ export class HandRenderer {
     tipMat.emissive.set(0x5a3a10);
     for (const t of tips) this.joints[t].material = tipMat;
 
-    // Bones — one thin cylinder per connection, oriented each frame.
+    // Bones - one thin cylinder per connection, oriented each frame.
     const boneGeo = new THREE.CylinderGeometry(0.022, 0.022, 1, 8);
     boneGeo.translate(0, 0.5, 0); // origin at one end so we can scale to length
     this.boneMat = new THREE.MeshStandardMaterial({

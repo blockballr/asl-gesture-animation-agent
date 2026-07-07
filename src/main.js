@@ -1,9 +1,9 @@
-// main.js — Milestone 3: speech/text -> whole-word signs (with fingerspell
+// main.js - Milestone 3: speech/text -> whole-word signs (with fingerspell
 // fallback) on a two-hand avatar.
 //
 // The scene is unchanged from M1/M2. New here: two hand renderers (left +
 // right), a pose-based clip player, and the resolver that turns typed/spoken
-// words into a signed utterance — known words are signed, everything else is
+// words into a signed utterance - known words are signed, everything else is
 // fingerspelled.
 
 import * as THREE from 'three';
@@ -113,9 +113,9 @@ player.onCue = (label) => {
 function renderGloss(gloss) {
   els.gloss.innerHTML = gloss
     .map((g) => {
-      const label = `${g.token}${g.mode === 'spell' ? ' ✎' : ''}`;
+      const label = g.token;
       const inner = g.ref
-        ? `<a class="reflink" href="${g.ref}" target="_blank" rel="noopener">${label} ↗</a>`
+        ? `<a class="reflink" href="${g.ref}" target="_blank" rel="noopener">${label}</a>`
         : label;
       return `<span class="tok ${g.mode}">${inner}</span>`;
     })
@@ -129,8 +129,8 @@ async function say(text) {
   if (!clean) return;
   els.heard.textContent = clean;
   const g = await toGloss(clean, glossMode);
-  els.glossline.textContent = g.text || '—';
-  if (g.error) els.status.textContent = `gemini failed → rules (${g.error})`;
+  els.glossline.textContent = g.text || '-';
+  if (g.error) els.status.textContent = `gemini failed, using rules (${g.error})`;
   const { clip, gloss } = resolveText(g.text);
   renderGloss(gloss);
   player.play(clip);
@@ -147,14 +147,14 @@ els.modes.querySelectorAll('button').forEach((b) => {
 els.sign.addEventListener('click', () => say(els.text.value));
 els.text.addEventListener('keydown', (e) => { if (e.key === 'Enter') say(els.text.value); });
 
-// Speech (mic) — falls back gracefully when unsupported.
+// Speech (mic) - falls back gracefully when unsupported.
 const speech = createSpeech({
   onResult: ({ interim, final }) => {
     if (interim) els.heard.textContent = interim + '…';
     if (final) say(final);
   },
   onState: (state, detail) => {
-    if (state === 'listening') { els.status.textContent = '● listening'; els.mic.classList.add('on'); }
+    if (state === 'listening') { els.status.textContent = 'listening'; els.mic.classList.add('on'); }
     else if (state === 'error') { els.status.textContent = `mic error: ${detail}`; els.mic.classList.remove('on'); }
     else { els.status.textContent = 'ready'; els.mic.classList.remove('on'); }
   },
@@ -164,8 +164,8 @@ if (speech.supported) {
   els.mic.addEventListener('click', () => (speech.listening ? speech.stop() : speech.start()));
 } else {
   els.mic.disabled = true;
-  els.mic.textContent = '🎤 no mic API';
-  els.status.textContent = 'speech unsupported — use the text box (Chrome/Edge for mic)';
+  els.mic.textContent = 'no mic API';
+  els.status.textContent = 'speech unsupported - use the text box (Chrome/Edge for mic)';
 }
 
 // --- loop ----------------------------------------------------------------

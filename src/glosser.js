@@ -1,4 +1,4 @@
-// glosser.js — English -> ASL gloss, the M4 "agent" stage that sits in front
+// glosser.js - English -> ASL gloss, the M4 "agent" stage that sits in front
 // of the sign resolver. Three swappable modes:
 //   passthrough : English words map straight to signs (M3 behavior)
 //   rules       : local heuristic gloss (drop function words, uppercase); no network

@@ -1,4 +1,4 @@
-// gloss.js — serverless proxy: POST { text } -> { gloss }. Holds the Gemini
+// gloss.js - serverless proxy: POST { text } -> { gloss }. Holds the Gemini
 // API key server-side (env GEMINI_API_KEY) so it never reaches the browser.
 // Deployed as a Vercel function; the same route is served in local dev by the
 // middleware in vite.config.js.

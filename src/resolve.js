@@ -1,9 +1,9 @@
-// resolve.js — turn input text into one playable clip.
+// resolve.js - turn input text into one playable clip.
 //
 // M3 gloss is passthrough: each English word maps directly to a sign if the
 // dictionary has one, otherwise it is fingerspelled. (The real English->ASL
-// gloss layer — reordering, dropping function words, disambiguation, learning
-// new signs — is the agent, arriving in M4.) Known signs and fingerspelled
+// gloss layer - reordering, dropping function words, disambiguation, learning
+// new signs - is the agent, arriving in M4.) Known signs and fingerspelled
 // words are concatenated into a single clip with short blended transitions.
 
 import { getSignClip, hasSign, PHRASES, refUrl } from './signs.js';

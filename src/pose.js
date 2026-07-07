@@ -1,4 +1,4 @@
-// pose.js — a "pose" is the state of both hands in a single frame.
+// pose.js - a "pose" is the state of both hands in a single frame.
 //
 // A single hand is 21 [x, y, z] landmarks in MediaPipe Hand order (see
 // hand.js). A pose is { R, L } where R is the right hand and L is the left
@@ -48,7 +48,7 @@ export function translatePose(p, dx, dy, dz) {
 }
 
 // Mirror a right hand into a left hand across the YZ plane (x -> -x). The
-// thumb, which points -x on the right hand, ends up pointing +x — correct for
+// thumb, which points -x on the right hand, ends up pointing +x - correct for
 // a left hand.
 export function mirrorHand(hand) {
   return hand.map((p) => [-p[0], p[1], p[2]]);
@@ -60,7 +60,7 @@ const _e = new THREE.Euler();
 const _v = new THREE.Vector3();
 
 // Rotate a hand about its wrist (landmark 0) by euler angles {x, y, z} in
-// radians. The wrist stays put; the fingers swing — this is how a sign orients
+// radians. The wrist stays put; the fingers swing - this is how a sign orients
 // the palm (toward the viewer, upward, tilted, etc.).
 export function rotateHand(hand, { x = 0, y = 0, z = 0 } = {}) {
   _pivot.set(hand[0][0], hand[0][1], hand[0][2]);

@@ -1,6 +1,6 @@
 // Headless data-path check for M3. Verifies that every seed sign, a
 // fingerspelled word, and a full mixed sentence all synthesize into
-// well-formed two-hand poses — 21 finite [x,y,z] landmarks per present hand.
+// well-formed two-hand poses - 21 finite [x,y,z] landmarks per present hand.
 // Cannot verify the WebGL render (that needs a browser); this guards the data.
 
 import { vocabularyList, getSignClip } from '../src/signs.js';
@@ -8,7 +8,7 @@ import { fingerspellClip } from '../src/fingerspell.js';
 import { resolveText } from '../src/resolve.js';
 
 let failures = 0;
-const fail = (msg) => { console.error('  ✗', msg); failures++; };
+const fail = (msg) => { console.error('  FAIL', msg); failures++; };
 
 function checkHand(hand, where) {
   if (!Array.isArray(hand) || hand.length !== 21) {
@@ -50,7 +50,7 @@ console.log(`  QX ${fs.frames.length} frames`);
 console.log('sentence:');
 const { clip, gloss } = resolveText('hello me name pizza thank you');
 checkClip(clip, 'utterance');
-console.log('  gloss:', gloss.map((g) => `${g.token}${g.mode === 'spell' ? '✎' : ''}`).join(' · '));
+console.log('  gloss:', gloss.map((g) => g.token).join(', '));
 console.log(`  ${clip.frames.length} frames`);
 
 console.log(failures ? `\nFAILED (${failures})` : '\nAll checks passed.');

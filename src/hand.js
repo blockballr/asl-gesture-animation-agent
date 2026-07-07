@@ -1,4 +1,4 @@
-// hand.js — the sign data contract.
+// hand.js - the sign data contract.
 //
 // A "sign clip" is an array of frames. Each frame is 21 landmarks in
 // MediaPipe Hand order, every landmark an [x, y, z] triple. This is exactly
@@ -16,7 +16,7 @@ import * as THREE from 'three';
 // 17-20 pinky
 export const LANDMARK_COUNT = 21;
 
-// Bone topology — the MediaPipe HAND_CONNECTIONS set.
+// Bone topology - the MediaPipe HAND_CONNECTIONS set.
 export const HAND_CONNECTIONS = [
   [0, 1], [1, 2], [2, 3], [3, 4],        // thumb
   [0, 5], [5, 6], [6, 7], [7, 8],        // index
@@ -70,7 +70,7 @@ function rotateAboutWrist(landmarks, axis, angle) {
 
 // Generate a "wave" sign clip: the open hand tilts side to side about the
 // wrist while rocking slightly in depth, so it reads as a friendly wave.
-// Returns { name, fps, frames } — the standard clip shape.
+// Returns { name, fps, frames } - the standard clip shape.
 export function waveClip({ frames = 90, fps = 30 } = {}) {
   const base = baseHand();
   const zAxis = new THREE.Vector3(0, 0, 1);

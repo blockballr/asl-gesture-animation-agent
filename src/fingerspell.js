@@ -1,4 +1,4 @@
-// fingerspell.js — turn a word into a playable landmark clip.
+// fingerspell.js - turn a word into a playable landmark clip.
 //
 // For each letter: a short transition from the previous pose, then a hold.
 // Doubled letters get a small lateral re-articulation bounce so "LL" reads as
@@ -32,7 +32,7 @@ function translate(frame, dx, dy, dz) {
 const MOTION = {
   // J: pinky drops and hooks to the left.
   J: (u) => [-0.28 * u, -0.30 * Math.sin(u * Math.PI * 0.9), 0],
-  // Z: index traces a Z — right, diagonal down-left, right.
+  // Z: index traces a Z - right, diagonal down-left, right.
   Z: (u) => {
     if (u < 0.33) return [0.30 * (u / 0.33), 0.0, 0];
     if (u < 0.66) { const k = (u - 0.33) / 0.33; return [0.30 - 0.30 * k, -0.30 * k, 0]; }

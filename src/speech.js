@@ -1,4 +1,4 @@
-// speech.js — Web Speech API wrapper (Chrome/Edge).
+// speech.js - Web Speech API wrapper (Chrome/Edge).
 //
 // createSpeech emits interim + final transcripts via callbacks and reports
 // listening state. Returns { supported:false } where the API is unavailable
