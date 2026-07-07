@@ -13,6 +13,7 @@ import { idleClip } from './fingerspell.js';
 import { resolveText } from './resolve.js';
 import { lerpPose } from './pose.js';
 import { createSpeech } from './speech.js';
+import { addBodyReference } from './reference.js';
 
 const app = document.getElementById('app');
 
@@ -43,6 +44,9 @@ scene.add(rim);
 const grid = new THREE.GridHelper(10, 20, 0x223, 0x151a26);
 grid.position.y = -0.2;
 scene.add(grid);
+
+// Faint head + shoulders so location-based signs have a body to anchor to.
+addBodyReference(scene);
 
 // Two hands. The left starts hidden; one-hand clips (fingerspelling, and signs
 // that only use the right hand) leave it hidden.
