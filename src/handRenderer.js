@@ -52,6 +52,10 @@ export class HandRenderer {
     this._q = new THREE.Quaternion();
   }
 
+  setVisible(visible) {
+    this.group.visible = visible;
+  }
+
   setFrame(landmarks) {
     // Position joints.
     for (let i = 0; i < LANDMARK_COUNT; i++) {

@@ -1,13 +1,17 @@
-// main.js — Milestone 2: speech/text -> fingerspelled letters on the avatar.
+// main.js — Milestone 3: speech/text -> whole-word signs (with fingerspell
+// fallback) on a two-hand avatar.
 //
-// The scene + hand renderer are unchanged from M1. New here: a small clip
-// player that idles by default and plays a fingerspelling clip once on demand,
-// driven by either the Web Speech API or a text input fallback.
+// The scene is unchanged from M1/M2. New here: two hand renderers (left +
+// right), a pose-based clip player, and the resolver that turns typed/spoken
+// words into a signed utterance — known words are signed, everything else is
+// fingerspelled.
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { HandRenderer } from './handRenderer.js';
-import { fingerspellClip, idleClip } from './fingerspell.js';
+import { idleClip } from './fingerspell.js';
+import { resolveText } from './resolve.js';
+import { lerpPose } from './pose.js';
 import { createSpeech } from './speech.js';
 
 const app = document.getElementById('app');
@@ -18,7 +22,7 @@ scene.background = new THREE.Color(0x0b0e14);
 scene.fog = new THREE.Fog(0x0b0e14, 6, 14);
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.set(0, 1.1, 4.2);
+camera.position.set(0, 1.1, 4.6);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -40,17 +44,28 @@ const grid = new THREE.GridHelper(10, 20, 0x223, 0x151a26);
 grid.position.y = -0.2;
 scene.add(grid);
 
-const hand = new HandRenderer(scene);
+// Two hands. The left starts hidden; one-hand clips (fingerspelling, and signs
+// that only use the right hand) leave it hidden.
+const handR = new HandRenderer(scene);
+const handL = new HandRenderer(scene);
+handL.setVisible(false);
+
+function setPose(p) {
+  handR.setFrame(p.R);
+  if (p.L) { handL.setFrame(p.L); handL.setVisible(true); }
+  else handL.setVisible(false);
+}
 
 // --- clip player ---------------------------------------------------------
-// Plays `clip` once, then falls back to the looping idle clip.
+// Plays `clip` once (a sequence of two-hand poses), then falls back to the
+// looping idle clip.
 const idle = idleClip();
 const player = {
   clip: idle,
   loop: true,
   playhead: 0,
-  onLetter: () => {},
-  play(clip) { this.clip = clip; this.loop = false; this.playhead = 0; },
+  onCue: () => {},
+  play(clip) { if (!clip) return; this.clip = clip; this.loop = false; this.playhead = 0; },
   toIdle() { this.clip = idle; this.loop = true; this.playhead = 0; },
   advance(dt) {
     const c = this.clip;
@@ -62,52 +77,55 @@ const player = {
     const i0 = Math.floor(this.playhead);
     const i1 = Math.min(i0 + 1, c.frames.length - 1);
     const t = this.playhead - i0;
-    hand.setFrame(lerpFrame(c.frames[i0], c.frames[i1], t));
-    this.onLetter(c.labels ? c.labels[i0] || '' : '');
+    setPose(lerpPose(c.frames[i0], c.frames[i1], t));
+    this.onCue(c.labels ? c.labels[i0] || '' : '');
   },
 };
-
-function lerpFrame(a, b, t) {
-  const out = new Array(a.length);
-  for (let i = 0; i < a.length; i++) {
-    out[i] = [
-      a[i][0] + (b[i][0] - a[i][0]) * t,
-      a[i][1] + (b[i][1] - a[i][1]) * t,
-      a[i][2] + (b[i][2] - a[i][2]) * t,
-    ];
-  }
-  return out;
-}
 
 // --- HUD wiring ----------------------------------------------------------
 const els = {
   heard: document.getElementById('heard'),
-  letter: document.getElementById('letter'),
+  cue: document.getElementById('cue'),
+  gloss: document.getElementById('gloss'),
   status: document.getElementById('status'),
   mic: document.getElementById('mic'),
   text: document.getElementById('text'),
-  spell: document.getElementById('spell'),
+  sign: document.getElementById('sign'),
 };
 
-player.onLetter = (l) => {
-  els.letter.textContent = l && l !== '·' ? l : '';
+// The big corner cue shows the current letter (fingerspelling) or sign name.
+// Size shrinks for longer strings so multi-letter sign names still fit.
+player.onCue = (label) => {
+  const s = label && label !== '·' ? label : '';
+  els.cue.textContent = s;
+  els.cue.style.fontSize = s.length <= 1
+    ? '128px'
+    : `${Math.max(30, Math.min(96, Math.round(560 / (s.length + 2))))}px`;
 };
 
-function spell(text) {
+function renderGloss(gloss) {
+  els.gloss.innerHTML = gloss
+    .map((g) => `<span class="tok ${g.mode}">${g.token}${g.mode === 'spell' ? ' ✎' : ''}</span>`)
+    .join('<span class="sep">·</span>');
+}
+
+function say(text) {
   const clean = (text || '').trim();
   if (!clean) return;
   els.heard.textContent = clean;
-  player.play(fingerspellClip(clean));
+  const { clip, gloss } = resolveText(clean);
+  renderGloss(gloss);
+  player.play(clip);
 }
 
-els.spell.addEventListener('click', () => spell(els.text.value));
-els.text.addEventListener('keydown', (e) => { if (e.key === 'Enter') spell(els.text.value); });
+els.sign.addEventListener('click', () => say(els.text.value));
+els.text.addEventListener('keydown', (e) => { if (e.key === 'Enter') say(els.text.value); });
 
 // Speech (mic) — falls back gracefully when unsupported.
 const speech = createSpeech({
   onResult: ({ interim, final }) => {
     if (interim) els.heard.textContent = interim + '…';
-    if (final) spell(final);
+    if (final) say(final);
   },
   onState: (state, detail) => {
     if (state === 'listening') { els.status.textContent = '● listening'; els.mic.classList.add('on'); }

@@ -44,7 +44,9 @@ export function fingerspellClip(text) {
   const rest = restPose();
   const frames = [];
   const labels = [];
-  const push = (f, l) => { frames.push(f); labels.push(l); };
+  // Frames are two-hand poses; fingerspelling uses the right hand only, so the
+  // left hand (L) is null and the renderer hides it.
+  const push = (f, l) => { frames.push({ R: f, L: null }); labels.push(l); };
 
   const tokens = text.toUpperCase().replace(/[^A-Z ]/g, '').split('');
   let prev = rest;
@@ -97,7 +99,7 @@ export function idleClip({ frames = 120, fps = FPS } = {}) {
     const t = f / frames;
     const dx = 0.05 * Math.sin(t * Math.PI * 2);
     const dy = 0.03 * Math.sin(t * Math.PI * 4);
-    out.push(translate(rest, dx, dy, 0));
+    out.push({ R: translate(rest, dx, dy, 0), L: null });
   }
   return { name: 'idle', fps, frames: out, labels: out.map(() => '') };
 }
