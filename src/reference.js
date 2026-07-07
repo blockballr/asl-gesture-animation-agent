@@ -14,13 +14,13 @@
 import * as THREE from 'three';
 
 export const REF = {
-  headCenterY: 2.45,     // vertical center of the head
-  headRadius: 0.72,      // ~ matches a hand-length so proportions read human
+  headCenterY: 2.55,     // vertical center of the head
+  headRadius: 1.15,      // ~ matches a hand-length so proportions read human
   headZ: -1.0,           // set back behind the hands (hands sign near z=0)
-  shoulderY: 0.35,       // height of the shoulder line
-  shoulderHalfWidth: 1.55,
-  neckBottomRadius: 0.30,
-  neckTopRadius: 0.22,
+  shoulderY: 1.20,       // height of the shoulder line
+  shoulderHalfWidth: 2.10,
+  neckBottomRadius: 0.45,
+  neckTopRadius: 0.35,
   color: 0x2a3350,       // cool, dim slate so it recedes from the bright hands
   opacity: 0.55,
 };
