@@ -1,0 +1,18 @@
+{
+  "name": "asl-signer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Speech-to-ASL agent: spoken English in, animated sign gestures out.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.171.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
