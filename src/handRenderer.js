@@ -9,7 +9,7 @@ import { HAND_CONNECTIONS, LANDMARK_COUNT } from './hand.js';
 
 const SCALE = 1.85; // normalized hand (~1 unit) -> world units
 const LIFT_Y = 1.32;   // raise hands into face/chest signing space (tunable)
-const OFFSET_X = 1.70;  // horizontal position of the signing space
+const OFFSET_X = 0.25;  // horizontal position of the signing space
 const OFFSET_Z = 0.85;  // pull hands forward, off the face in depth
 
 export class HandRenderer {
