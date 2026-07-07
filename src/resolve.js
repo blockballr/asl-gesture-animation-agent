@@ -6,7 +6,7 @@
 // new signs — is the agent, arriving in M4.) Known signs and fingerspelled
 // words are concatenated into a single clip with short blended transitions.
 
-import { getSignClip, hasSign, PHRASES } from './signs.js';
+import { getSignClip, hasSign, PHRASES, refUrl } from './signs.js';
 import { fingerspellClip } from './fingerspell.js';
 import { restPose } from './handshape.js';
 import { pose, lerpPose } from './pose.js';
@@ -57,7 +57,7 @@ export function resolveText(text) {
   for (const tok of tokens) {
     if (hasSign(tok)) {
       clips.push(getSignClip(tok));
-      gloss.push({ token: tok.toUpperCase(), mode: 'sign' });
+      gloss.push({ token: tok.toUpperCase(), mode: 'sign', ref: refUrl(tok) });
     } else {
       clips.push(fingerspellClip(tok));
       gloss.push({ token: tok.toUpperCase(), mode: 'spell' });

@@ -109,7 +109,13 @@ player.onCue = (label) => {
 
 function renderGloss(gloss) {
   els.gloss.innerHTML = gloss
-    .map((g) => `<span class="tok ${g.mode}">${g.token}${g.mode === 'spell' ? ' ✎' : ''}</span>`)
+    .map((g) => {
+      const label = `${g.token}${g.mode === 'spell' ? ' ✎' : ''}`;
+      const inner = g.ref
+        ? `<a class="reflink" href="${g.ref}" target="_blank" rel="noopener">${label} ↗</a>`
+        : label;
+      return `<span class="tok ${g.mode}">${inner}</span>`;
+    })
     .join('<span class="sep">·</span>');
 }
 

@@ -418,3 +418,12 @@ export function getSignClip(word) {
 export function vocabularyList() {
   return Object.keys(VOCAB);
 }
+
+// Authoritative reference: a Handspeak ASL dictionary search for the word, so
+// a synthesized sign can be compared against a real signer. Centralized here
+// so the URL format is a one-line fix if the site ever changes.
+const HANDSPEAK_SEARCH = 'https://www.handspeak.com/word/search/index.php?query=';
+export function refUrl(word) {
+  const w = (word || '').toLowerCase().replace(/-/g, ' ').trim();
+  return HANDSPEAK_SEARCH + encodeURIComponent(w);
+}

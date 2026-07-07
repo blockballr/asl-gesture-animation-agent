@@ -42,6 +42,8 @@
       .gloss .tok.sign { color: #9fe8b0; }
       .gloss .tok.spell { color: #ffd27f; }
       .gloss .sep { color: #4a5162; }
+      .gloss .reflink { color: inherit; text-decoration: none; border-bottom: 1px dotted currentColor; cursor: pointer; }
+      .gloss .reflink:hover { border-bottom-color: transparent; opacity: .8; }
 
       .cue {
         position: fixed; right: 32px; bottom: 28px; z-index: 10;
@@ -73,7 +75,7 @@
       <div class="heard-label">gloss</div>
       <div class="gloss" id="gloss"></div>
 
-      <div class="note">Mic uses the Web Speech API (Chrome/Edge). Signs are parametric approximations on a floating-hands avatar — real ASL needs body/face channels (later milestones). Gloss is passthrough for now; the English→ASL agent is next.</div>
+      <div class="note">Mic uses the Web Speech API (Chrome/Edge). Signs are parametric approximations on a floating-hands avatar — real ASL needs body/face channels (later milestones). Click a <b style="color:#9fe8b0">signed</b> word to compare it to a reference signer ↗. Gloss is passthrough for now; the English→ASL agent is next.</div>
     </div>
 
     <div class="cue" id="cue"></div>
