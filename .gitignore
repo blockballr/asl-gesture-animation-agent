@@ -6,3 +6,7 @@ dist/
 
 # Claude Code local config
 .claude/
+
+# Local secrets
+.env
+.env.local

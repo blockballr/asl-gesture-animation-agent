@@ -44,6 +44,9 @@
       .gloss .sep { color: #4a5162; }
       .gloss .reflink { color: inherit; text-decoration: none; border-bottom: 1px dotted currentColor; cursor: pointer; }
       .gloss .reflink:hover { border-bottom-color: transparent; opacity: .8; }
+      .modes button { flex: 1; padding: 7px 6px; font-size: 12px; }
+      .modes button.on { background: #26314f; border-color: #3d5a9e; color: #cdd8f5; }
+      .glossline { color: #9fe8b0; font-weight: 600; min-height: 1.3em; word-break: break-word; }
 
       .cue {
         position: fixed; right: 32px; bottom: 28px; z-index: 10;
@@ -72,10 +75,18 @@
       <div class="status" id="status">ready</div>
       <div class="heard-label">heard</div>
       <div class="heard" id="heard">—</div>
+      <div class="heard-label">gloss engine</div>
+      <div class="row modes" id="modes">
+        <button data-mode="passthrough" class="on">Passthrough</button>
+        <button data-mode="rules">Rules</button>
+        <button data-mode="gemini">Gemini</button>
+      </div>
+      <div class="heard-label">ASL gloss</div>
+      <div class="heard glossline" id="glossline">—</div>
       <div class="heard-label">gloss</div>
       <div class="gloss" id="gloss"></div>
 
-      <div class="note">Mic uses the Web Speech API (Chrome/Edge). Signs are parametric approximations on a floating-hands avatar — real ASL needs body/face channels (later milestones). Click a <b style="color:#9fe8b0">signed</b> word to compare it to a reference signer ↗. Gloss is passthrough for now; the English→ASL agent is next.</div>
+      <div class="note">Mic uses the Web Speech API (Chrome/Edge). Signs are parametric approximations on a floating-hands avatar — real ASL needs body/face channels (later milestones). Click a <b style="color:#9fe8b0">signed</b> word to compare it to a reference signer ↗. Gloss engine: <b>Passthrough</b> (raw English), <b>Rules</b> (local), or <b>Gemini</b> (English→ASL grammar via a serverless proxy — needs a server key).</div>
     </div>
 
     <div class="cue" id="cue"></div>

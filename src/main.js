@@ -14,6 +14,7 @@ import { resolveText } from './resolve.js';
 import { lerpPose } from './pose.js';
 import { createSpeech } from './speech.js';
 import { addBodyReference } from './reference.js';
+import { toGloss } from './glosser.js';
 
 const app = document.getElementById('app');
 
@@ -95,6 +96,8 @@ const els = {
   mic: document.getElementById('mic'),
   text: document.getElementById('text'),
   sign: document.getElementById('sign'),
+  glossline: document.getElementById('glossline'),
+  modes: document.getElementById('modes'),
 };
 
 // The big corner cue shows the current letter (fingerspelling) or sign name.
@@ -119,14 +122,27 @@ function renderGloss(gloss) {
     .join('<span class="sep">·</span>');
 }
 
-function say(text) {
+let glossMode = 'passthrough';
+
+async function say(text) {
   const clean = (text || '').trim();
   if (!clean) return;
   els.heard.textContent = clean;
-  const { clip, gloss } = resolveText(clean);
+  const g = await toGloss(clean, glossMode);
+  els.glossline.textContent = g.text || '—';
+  if (g.error) els.status.textContent = `gemini failed → rules (${g.error})`;
+  const { clip, gloss } = resolveText(g.text);
   renderGloss(gloss);
   player.play(clip);
 }
+
+// Gloss-engine mode buttons (passthrough / rules / gemini).
+els.modes.querySelectorAll('button').forEach((b) => {
+  b.addEventListener('click', () => {
+    glossMode = b.dataset.mode;
+    els.modes.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
+  });
+});
 
 els.sign.addEventListener('click', () => say(els.text.value));
 els.text.addEventListener('keydown', (e) => { if (e.key === 'Enter') say(els.text.value); });
