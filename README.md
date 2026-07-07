@@ -1,6 +1,9 @@
-# ASL Signer
+# HandGloss
 
-Speech-to-ASL agent: spoken English in, animated sign gestures out, in the browser.
+A speech-to-ASL engine: spoken English in, animated sign gestures out, in the browser.
+
+The name is the pipeline: **hand** (the synthesized signing) plus **gloss** (the
+English-to-ASL gloss layer that decides what to sign).
 
 Say a word (or type it) and a 3D hand skeleton signs it back to you — real
 whole-word signs where we have them, fingerspelled letter-by-letter where we

@@ -1,9 +1,9 @@
 {
-  "name": "asl-signer",
+  "name": "handgloss",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Speech-to-ASL agent: spoken English in, animated sign gestures out.",
+  "description": "HandGloss: a speech-to-ASL engine. Spoken English in, animated sign gestures out.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
